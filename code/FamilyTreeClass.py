@@ -1,18 +1,21 @@
 class FamilyTree:
     def __init__(self, lst):
-        self.family = lst
+        self.__family = lst
 
-    def is_in_family(self, name):
-        #checks if someone in the family tree
-        if name not in self.family:
-            return False
-        return True
+    def get_family(self):
+        return self.__family
 
     def get_family_member(self, name):
         #returns the details of person in the family tree
-        for person in self.family:
+        for person in self.__family:
             if person["Name"] == name:
                 return person
+
+    def is_in_family(self, name):
+        #checks if someone in the family tree
+        if self.get_family_member(name) is None:
+            return False
+        return True
 
     def get_parents(self,name):
         #returns of the person inputted
@@ -23,7 +26,7 @@ class FamilyTree:
     def get_children(self, name):
         #checks if the person inputted is stored as anyone's parent
         children = []
-        for person in self.family:
+        for person in self.__family:
             if person["Mother"] == name or person["Father"] == name:
                 children.append(person["Name"])
         #returns a list of their children
