@@ -3,71 +3,61 @@ class FamilyTree:
         self.__family = lst
 
     def get_family(self):
-        return self.__family
+        return self.__family # return a list of the family tree
 
     def get_family_member(self, name):
-        #returns the details of person in the family tree
         for person in self.__family:
             if person["Name"] == name:
-                return person
+                return person #returns the details of person in the family tree
 
     def is_in_family(self, name):
-        #checks if someone in the family tree
-        if self.get_family_member(name) is None:
+        if self.get_family_member(name) is None: #checks if the name entered is not the family tree
             return False
         return True
 
     def get_parents(self,name):
-        #returns of the person inputted
         person = self.get_family_member(name)
         mother,father = person["Mother"], person["Father"]
-        return [mother, father]
+        return [mother, father]   #returns the parents of the name inputted
 
     def get_children(self, name):
-        #checks if the person inputted is stored as anyone's parent
         children = []
         for person in self.__family:
-            if person["Mother"] == name or person["Father"] == name:
+            if person["Mother"] == name or person["Father"] == name: #checks if the person inputted is stored as anyone's parent
                 children.append(person["Name"])
-        #returns a list of their children
-        return children
+
+        return children  #returns a list of their children
 
     def get_grandchildren(self, name):
         grandchildren = []
-        #finds the children of the name inputted
-        children = self.get_children(name)
+        children = self.get_children(name) #finds the children of the name inputted
         if children != []:
             for x in children:
-                grandkid = self.get_children(x)
-                # checks if their child has their own kid
+                grandkid = self.get_children(x) # checks if their child has their own kid
                 if grandkid is not None:
                     for g in grandkid:
-                        #if they do it gets added to a list of grandchildren
-                        grandchildren.append(g)
+                        grandchildren.append(g) #if they do, it gets added to a list of grandchildren
         return grandchildren
 
     def get_spouse(self, name):
-        #returns their spouse/partner
         person = self.get_family_member(name)
-        return person["Spouse"]
+        return person["Spouse"] #returns their spouse/partner of the name entered
 
     def get_sibling(self, name):
-        #gets the children of their parents
         mother,father = self.get_parents(name)
         if mother == "Unknown" and father == "Unknown":
             return []
-        siblings = self.get_children(mother)
-        #removes the name inputted so it only has their siblings
-        if name in siblings:
+        siblings = self.get_children(mother) #gets the children of their parents
+        if name in siblings: #removes the name inputted so it only has their siblings
             siblings.remove(name)
         return siblings
 
     def format_checker(self, lst):
-        if lst == "Dead":
+        if lst == "Dead": #don't change anything if they dead
             return lst
-        if lst == []:
+        if lst == []: # no known family member
             return "Unknown"
-        elif len(lst) == 1:
+        elif len(lst) == 1: #returns the only name in the list
             return lst[0]
         return ", ".join(lst)
 
@@ -80,29 +70,23 @@ class FamilyTree:
         return f"Mother: {mother} \nFather: {father} \nSiblings: {siblings} \nSpouse: {spouse} \nChildren: {children}"
 
     def get_aunts_uncles(self, name):
-        #finds the siblings of their parents
         mother,father = self.get_parents(name)
-        # have no parents information
-        if mother == "Unknown" and father == "Unknown":
+        if mother == "Unknown" and father == "Unknown": #have no parents information
             return []
-        m_sibling = self.get_sibling(mother)
+        m_sibling = self.get_sibling(mother) #finds the siblings of their parents
         f_sibling = self.get_sibling(father)
-        # have only one parent information
-        if f_sibling == [] and mother != "Unknown":
+        if f_sibling == [] and mother != "Unknown": # have only one parent information
             return m_sibling
         elif m_sibling == [] and father != "Unknown":
             return f_sibling
-        # have both parents information
-        return m_sibling + f_sibling
+        return m_sibling + f_sibling # have both parents information
 
     def get_cousins(self, name):
         cousins = []
-        #finds the siblings of their parents
-        aunt_uncle = self.get_aunts_uncles(name)
+        aunt_uncle = self.get_aunts_uncles(name) #finds the siblings of their parents
         if len(aunt_uncle) == 0:
             return aunt_uncle
-        #gets the kid of each aunt/uncles
-        for person in aunt_uncle:
+        for person in aunt_uncle: #gets the kid of each aunt/uncles
             kid = self.get_children(person)
             if kid != []:
                 cousins += kid
@@ -110,25 +94,18 @@ class FamilyTree:
 
 
     def get_extended(self, name):
-        #returns a list of alive (blood related) extended family members
         def alive_checker(people):
-            #filters out these inputs
-            if people == "Unknown" or people == []:
+            if people == "Unknown" or people == []:    #filtering out inputs without a family member
                 return people
             if type(people) == str:
                 person = self.get_family_member(people)
-                #it checks if the death date of the name entered is empty
-                if person["dof"] != "":
-                    #the name is replaced with dead if they are dead
-                    return "Dead"
+                if person["dof"] != "":    #it checks if the death date of the name entered is not empty
+                    return "Dead"    #if it's not, then they are dead
             elif type(people) is list:
-                #checks whether everyone in the list is alive
-                for x in people:
-                    #they get removed if they aren't
-                    if self.get_family_member(x)["dof"] != "":
+                for x in people:     #checks whether everyone in the list is alive
+                    if self.get_family_member(x)["dof"] != "":    #any dead family is removed from the list
                         people.remove(x)
-                #if list is empty, there are no alive family members
-                if people == []:
+                if people == []:     #if list is empty, there are no alive family members
                     return "Dead"
             return people
 
@@ -143,44 +120,75 @@ class FamilyTree:
         return (f"Mother: {alive_mother} \nFather: {alive_father} \nSiblings: {self.format_checker(alive_siblings)} "
                 f"\nSpouse: {alive_spouse} \nChildren: {self.format_checker(alive_children)} \nAunts/Uncles: {self.format_checker(alive_aunts_uncles)} \nCousins: {self.format_checker(alive_cousins)}")
 
+    def get_birthdays(self):
+        birthdays = {}
+        for person in self.__family:
+            birthdays[person["Name"]] = person["dob"]  #adding the name and birthday of each person to the list
+        return birthdays
+
+    def get_birthday_calender(self):
+        #find a function that can get the dates from strings - only day and month
+        #sort by date in the month
+        from datetime import datetime
+        birthdays = []
+        for person in self.__family:
+            birthdays.append({"name":person["Name"],"dob":person["dob"]}) #storing the name and dob in dictionary for each person
+
+        for x in birthdays:
+            x["dob"] = datetime.strptime(x["dob"], '%d/%m/%Y') #change the string date to the  object date
+
+        sorted_birthdays = sorted(birthdays, key = lambda bday: bday['dob']) #sorts using the date objects
+        print(sorted_birthdays)
+
+        #i need to change only store the month and the day of each person - store all three in one dictionary
+        #better to get the month and day while getting the name of the person
+        #then when sorting, you can sort by the month key -
+        #then convert the month from an integer to the full name
+        #figure out how i'm going to sort the days
+
+
+        # birthdays = self.get_birthdays()
+        # for x in birthdays:
+        #     date = datetime.strptime(birthdays[x], '%d/%m/%Y').date()
+        #     month = date.month
+        #     day = date.day
 
 
 
 
-p1 = {"Name":"Elias", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Ruby", "dob":"01/02/2000", "dof":"02/02/2025"}
-p2 = {"Name":"Ruby", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Elias", "dob":"01/02/2000", "dof":"02/02/2025"}
+
+p1 = {"Name":"Elias", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Ruby", "dob":"04/03/1900", "dof":"02/02/1960"}
+p2 = {"Name":"Ruby", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Elias", "dob":"08/02/1903", "dof":"02/02/1970"}
 
 
-m1 = {"Name":"Mara", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Dan", "dob":"01/02/2000", "dof":"02/02/2025"}
-m2 = {"Name":"Dan", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Mara", "dob":"01/02/1999", "dof":"02/02/2025"}
-p6 = {"Name":"Donna", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Bailey", "dob":"01/02/1999", "dof":"02/02/2025"}
-p5 = {"Name":"Bailey", "Mother":"Ruby", "Father":"Elias", "Spouse":"Donna", "dob":"01/02/1999", "dof":"02/02/2025"}
-p4 = {"Name":"Lyndon", "Mother":"Ruby", "Father":"Elias", "Spouse":"Zara", "dob":"01/02/1999", "dof":"02/02/2025"}
-p3 = {"Name":"Zara", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Lyndon", "dob":"01/02/1999", "dof":"02/02/2025"}
+m1 = {"Name":"Mara", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Dan", "dob":"13/02/1920", "dof":"02/02/1990"}
+m2 = {"Name":"Dan", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Mara", "dob":"12/03/1919", "dof":"02/02/1995"}
+p6 = {"Name":"Donna", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Bailey", "dob":"23/12/1929", "dof":"02/02/2006"}
+p5 = {"Name":"Bailey", "Mother":"Ruby", "Father":"Elias", "Spouse":"Donna", "dob":"07/05/1930", "dof":"02/02/2010"}
+p4 = {"Name":"Lyndon", "Mother":"Ruby", "Father":"Elias", "Spouse":"Zara", "dob":"19/01/1932", "dof":"02/02/2009"}
+p3 = {"Name":"Zara", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Lyndon", "dob":"15/04/1938", "dof":"02/02/2017"}
 
-m3 = {"Name":"Marie", "Mother":"Mara", "Father":"Dan", "Spouse":"Nathan", "dob":"19/05/2006", "dof":""}
-m4 = {"Name":"Nathan", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Marie", "dob":"15/01/2005", "dof":""}
-p7 = {"Name":"Victoria", "Mother":"Zara", "Father":"Lyndon", "Spouse":"Unknown", "dob":"01/02/1999", "dof":""}
-p8 = {"Name":"Lorenzo", "Mother":"Donna", "Father":"Bailey", "Spouse":"Christina", "dob":"10/07/2007", "dof":""}
-p9 = {"Name":"Christina", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Lorenzo", "dob":"10/07/2007", "dof":""}
-p10 = {"Name":"Amanda", "Mother":"Donna", "Father":"Bailey", "Spouse":"Unknown", "dob":"10/07/2007", "dof":""}
+m3 = {"Name":"Marie", "Mother":"Mara", "Father":"Dan", "Spouse":"Nathan", "dob":"03/05/1955", "dof":""}
+m4 = {"Name":"Nathan", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Marie", "dob":"09/07/1960", "dof":""}
+p7 = {"Name":"Victoria", "Mother":"Zara", "Father":"Lyndon", "Spouse":"Unknown", "dob":"02/08/1970", "dof":""}
+p8 = {"Name":"Lorenzo", "Mother":"Donna", "Father":"Bailey", "Spouse":"Christina", "dob":"10/07/1957", "dof":""}
+p9 = {"Name":"Christina", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Lorenzo", "dob":"16/11/1960", "dof":""}
+p10 = {"Name":"Amanda", "Mother":"Donna", "Father":"Bailey", "Spouse":"Unknown", "dob":"10/07/1957", "dof":""}
 
 
-m5 = {"Name":"Arie", "Mother":"Marie", "Father":"Nathan", "Spouse":"Alex", "dob":"10/06/2007", "dof":""}
-m6 = {"Name":"Alex", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Arie", "dob":"01/02/2005", "dof":""}
-m7 = {"Name":"Brie", "Mother":"Marie", "Father":"Nathan", "Spouse":"Kat", "dob":"10/07/2007", "dof":""}
-m8 = {"Name":"Kat", "Mother":"Christina", "Father":"Lorenzo", "Spouse":"Brie", "dob":"01/02/2000", "dof":""}
-p11 = {"Name":"James", "Mother":"Christina", "Father":"Lorenzo", "Spouse":"Sienna", "dob":"10/07/2007", "dof":""}
-p12 = {"Name":"Sienna", "Mother":"Unknown", "Father":"Unknown", "Spouse":"James", "dob":"10/07/2007", "dof":""}
+m5 = {"Name":"Arie", "Mother":"Marie", "Father":"Nathan", "Spouse":"Alex", "dob":"25/10/1980", "dof":""}
+m6 = {"Name":"Alex", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Arie", "dob":"28/02/1980", "dof":""}
+m7 = {"Name":"Brie", "Mother":"Marie", "Father":"Nathan", "Spouse":"Kat", "dob":"15/07/1985", "dof":""}
+m8 = {"Name":"Kat", "Mother":"Christina", "Father":"Lorenzo", "Spouse":"Brie", "dob":"01/08/1984", "dof":""}
+p11 = {"Name":"James", "Mother":"Christina", "Father":"Lorenzo", "Spouse":"Sienna", "dob":"10/11/1990", "dof":""}
+p12 = {"Name":"Sienna", "Mother":"Unknown", "Father":"Unknown", "Spouse":"James", "dob":"16/04/1994", "dof":""}
 
-m9 = {"Name":"Rie", "Mother":"Arie", "Father":"Alex", "Spouse":"Unknown", "dob":"11/07/2008", "dof":""}
-m10 = {"Name":"Kie", "Mother":"Brie", "Father":"Kat", "Spouse":"Unknown", "dob":"10/07/2007", "dof":""}
-p13 = {"Name":"Abby", "Mother":"James", "Father":"Sienna", "Spouse":"Unknown", "dob":"13/03/2006", "dof":""}
+m9 = {"Name":"Rie", "Mother":"Arie", "Father":"Alex", "Spouse":"Unknown", "dob":"26/06/2005", "dof":""}
+m10 = {"Name":"Kie", "Mother":"Brie", "Father":"Kat", "Spouse":"Unknown", "dob":"21/11/2010", "dof":""}
+p13 = {"Name":"Abby", "Mother":"James", "Father":"Sienna", "Spouse":"Unknown", "dob":"13/03/2025", "dof":""}
 
 extra = {"Name":"Mia", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Unknown", "dob":"11/07/2008", "dof":""}
 famDict = [m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,extra,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13]
 #a list containing the maternal and paternal branch
 
 FamilyDict = FamilyTree(famDict)
-
-#outside the class, check whether the name is in the family tree prior to searching
