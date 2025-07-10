@@ -11,10 +11,11 @@ def feature_menu():
     5. View Siblings
     6. View Cousins
     7. View Family Birthdays
-    8. Exit
+    8. View Birthday Calender
+    9. Exit
     """
     print(menu)
-    choice = int(input("Enter the number of your choice (1-8): "))
+    choice = int(input("Enter the number of your choice (1-9): "))
     return choice
 
 def format_columns(lst):
@@ -35,7 +36,7 @@ def name_checker():
 
 def fam_menu():
     choice = feature_menu()
-    while choice != 8:
+    while choice != 9:
         if choice == 1:
             names()
             name = name_checker()
@@ -66,10 +67,9 @@ def fam_menu():
             print(f"\nCousins: {FamilyDict.format_checker(cousins)}")
         elif choice == 7:
             format_columns(FamilyDict.get_birthdays())
+        elif choice == 8:
+            calender = FamilyDict.get_birthday_calender()
+            print("\n".join(calender))
         choice = feature_menu()
 
 fam_menu()
-
-
-#next up to complete the 2 birthday features and add then to the menu
-#come up with dob and dof for everyone

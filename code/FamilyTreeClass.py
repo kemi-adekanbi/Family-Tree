@@ -51,8 +51,8 @@ class FamilyTree:
         if name in siblings: #removes the name inputted so it only has their siblings
             siblings.remove(name)
         return siblings
-
-    def format_checker(self, lst):
+    @staticmethod
+    def format_checker(lst):
         if lst == "Dead": #don't change anything if they dead
             return lst
         if lst == []: # no known family member
@@ -75,11 +75,11 @@ class FamilyTree:
             return []
         m_sibling = self.get_sibling(mother) #finds the siblings of their parents
         f_sibling = self.get_sibling(father)
-        if f_sibling == [] and mother != "Unknown": # have only one parent information
+        if f_sibling == [] and mother != "Unknown": #if they have only one parent information
             return m_sibling
         elif m_sibling == [] and father != "Unknown":
             return f_sibling
-        return m_sibling + f_sibling # have both parents information
+        return m_sibling + f_sibling #if they have both parents information
 
     def get_cousins(self, name):
         cousins = []
@@ -121,37 +121,59 @@ class FamilyTree:
                 f"\nSpouse: {alive_spouse} \nChildren: {self.format_checker(alive_children)} \nAunts/Uncles: {self.format_checker(alive_aunts_uncles)} \nCousins: {self.format_checker(alive_cousins)}")
 
     def get_birthdays(self):
-        birthdays = {}
+        birthdays = []
         for person in self.__family:
-            birthdays[person["Name"]] = person["dob"]  #adding the name and birthday of each person to the list
+            birthdays.append(f'{person["Name"]} : {person["dob"]}') #adding the name and birthday of each person to the list
         return birthdays
 
     def get_birthday_calender(self):
-        #find a function that can get the dates from strings - only day and month
-        #sort by date in the month
         from datetime import datetime
+
+        def bubble_sort(lst):
+            for i in range(len(lst)-1,0,-1):#working backwards in the list
+                swapped = False
+                for k in range(i):
+                    if lst[k]["month"] == lst[k + 1]["month"]: #checks if they were born on the same month
+                        if lst[k]["day"] > lst[k + 1]["day"]: #if the current day is greater than the next day
+                            lst[k], lst[k + 1] = lst[k + 1], lst[k] #swaps them
+                            swapped = True
+                if not swapped:
+                    return lst
+            return lst
+
+        def calender_format(lst):
+            month_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September",
+                           "October", "November", "December"]
+            calender = []
+            for index, x in enumerate(lst):
+                person2 = lst[index - 1]  # gets the dictionary at the previous index
+                x["month"] = month_names[x["month"] - 1]  # changing the int version of the month to a string version of the month
+                if x["month"] == person2["month"] and x["day"] == person2[
+                    "day"]:  # checks to see if anyone has the same birthday
+                    x["name"] = f"{person2['name']}, {x['name']}"  # combines their name together
+                    lst.remove(person2)  # removes the dictionary as they've been combined with another
+                    calender.remove(calender[-1])
+                calender.append(f"{x['name']}: {x['day']} {x['month']}")  # storing the all the data in a string
+            return calender
+
         birthdays = []
         for person in self.__family:
-            birthdays.append({"name":person["Name"],"dob":person["dob"]}) #storing the name and dob in dictionary for each person
+            date = datetime.strptime(person["dob"], '%d/%m/%Y')
+            birthdays.append({"name": person["Name"], "month": date.month,
+                              "day": date.day})  # storing the name and dob in dictionary for each person
 
-        for x in birthdays:
-            x["dob"] = datetime.strptime(x["dob"], '%d/%m/%Y') #change the string date to the  object date
+        month_sorted = list(sorted(birthdays, key=lambda bday: bday['month']))  # sorts in ascending order using the month values
 
-        sorted_birthdays = sorted(birthdays, key = lambda bday: bday['dob']) #sorts using the date objects
-        print(sorted_birthdays)
+        sorted_birthdays = bubble_sort(month_sorted)
 
-        #i need to change only store the month and the day of each person - store all three in one dictionary
-        #better to get the month and day while getting the name of the person
-        #then when sorting, you can sort by the month key -
-        #then convert the month from an integer to the full name
-        #figure out how i'm going to sort the days
+        return calender_format(sorted_birthdays)
 
 
-        # birthdays = self.get_birthdays()
-        # for x in birthdays:
-        #     date = datetime.strptime(birthdays[x], '%d/%m/%Y').date()
-        #     month = date.month
-        #     day = date.day
+
+
+
+
+
 
 
 
