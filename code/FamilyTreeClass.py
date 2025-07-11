@@ -170,29 +170,29 @@ class FamilyTree:
     def get_average_death_age(self):
         all_age = []
         for x in self.__family:
-            if x["dod"] != "":
-                dob = x["dob"].split("/")
+            if x["dod"] != "": #checks if they are dead
+                dob = x["dob"].split("/") #get the day,month and year numbers only
                 dod = x["dod"].split("/")
-                all_age.append(int(dod[2])-int(dob[2]))
+                all_age.append(int(dod[2])-int(dob[2])) #to find the age they died, it subtracts the year they died from the year they were born on
         total_age = 0
         for x in all_age:
-            total_age += x
-        return total_age/len(all_age)
+            total_age += x #adds up all the ages in the list
+        return total_age/len(all_age) #divides the total but number of ages to get the average
 
     def get_children_per_person(self):
         people_children = []
         for x in self.__family:
-            children = self.get_children(x["Name"])
-            total = len(children)
-            people_children.append([x['Name'], total])
+            children = self.get_children(x["Name"]) # finds the children of each person in the family tree
+            total = len(children) #gets the total number of children
+            people_children.append([x['Name'], total])  #name of person and the total is added to a list
         return people_children
 
     def get_average_children(self):
-        lst_children = self.get_children_per_person()
+        lst_children = self.get_children_per_person() # gets how many children each person has
         total = 0
         for x in lst_children:
-            total += x[1]
-        return f"{total/len(lst_children) : .2f}"
+            total += x[1] #adds up each number of children in the list
+        return f"{total/len(lst_children) : .2f}" #returns the average to 2 significant figures
 
 
 
