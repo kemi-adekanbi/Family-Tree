@@ -202,37 +202,37 @@ class FamilyTree:
 
 
 
-p1 = {"Name":"Elias", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Ruby", "dob":"04/03/1900", "dod":"02/02/1960"}
-p2 = {"Name":"Ruby", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Elias", "dob":"08/02/1903", "dod":"02/02/1970"}
+p1 = {"Name":"Elias", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Ruby", "dob":[4,3,1900], "dod":[2,2,1960]}
+p2 = {"Name":"Ruby", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Elias", "dob":[8,2,1903], "dod":[2,2,1970]}
 
 
-m1 = {"Name":"Mara", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Dan", "dob":"13/02/1920", "dod":"02/02/1990"}
-m2 = {"Name":"Dan", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Mara", "dob":"12/03/1919", "dod":"02/02/1995"}
-p6 = {"Name":"Donna", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Bailey", "dob":"23/12/1929", "dod":"02/02/2006"}
-p5 = {"Name":"Bailey", "Mother":"Ruby", "Father":"Elias", "Spouse":"Donna", "dob":"07/05/1930", "dod":"02/02/2010"}
-p4 = {"Name":"Lyndon", "Mother":"Ruby", "Father":"Elias", "Spouse":"Zara", "dob":"19/01/1932", "dod":"02/02/2009"}
-p3 = {"Name":"Zara", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Lyndon", "dob":"15/04/1938", "dod":"02/02/2017"}
+m1 = {"Name":"Mara", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Dan", "dob":[13,2,1920], "dod":[2,2,1990]}
+m2 = {"Name":"Dan", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Mara", "dob":[12,3,1919], "dod":[2,2,1995]}
+p6 = {"Name":"Donna", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Bailey", "dob":[23,12,1929], "dod":[2,2,2006]}
+p5 = {"Name":"Bailey", "Mother":"Ruby", "Father":"Elias", "Spouse":"Donna", "dob":[7,5,1930], "dod":[2,2,2010]}
+p4 = {"Name":"Lyndon", "Mother":"Ruby", "Father":"Elias", "Spouse":"Zara", "dob":[19,1,1932], "dod":[2,2,2009]}
+p3 = {"Name":"Zara", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Lyndon", "dob":[15,4,1938], "dod":[2,2,2017]}
 
-m3 = {"Name":"Marie", "Mother":"Mara", "Father":"Dan", "Spouse":"Nathan", "dob":"03/05/1955", "dod":""}
-m4 = {"Name":"Nathan", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Marie", "dob":"09/07/1960", "dod":""}
-p7 = {"Name":"Victoria", "Mother":"Zara", "Father":"Lyndon", "Spouse":"Unknown", "dob":"02/08/1970", "dod":""}
-p8 = {"Name":"Lorenzo", "Mother":"Donna", "Father":"Bailey", "Spouse":"Christina", "dob":"10/07/1957", "dod":""}
-p9 = {"Name":"Christina", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Lorenzo", "dob":"16/11/1960", "dod":""}
-p10 = {"Name":"Amanda", "Mother":"Donna", "Father":"Bailey", "Spouse":"Unknown", "dob":"10/07/1957", "dod":""}
+m3 = {"Name":"Marie", "Mother":"Mara", "Father":"Dan", "Spouse":"Nathan", "dob":[3,5,1955], "dod":[]}
+m4 = {"Name":"Nathan", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Marie", "dob":[9,7,1960], "dod":[]}
+p7 = {"Name":"Victoria", "Mother":"Zara", "Father":"Lyndon", "Spouse":"Unknown", "dob":[2,8,1970], "dod":[]}
+p8 = {"Name":"Lorenzo", "Mother":"Donna", "Father":"Bailey", "Spouse":"Christina", "dob":[10,7,1957], "dod":[]}
+p9 = {"Name":"Christina", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Lorenzo", "dob":[16,11,1960], "dod":[]}
+p10 = {"Name":"Amanda", "Mother":"Donna", "Father":"Bailey", "Spouse":"Unknown", "dob":[10,7,1957], "dod":[]}
 
 
-m5 = {"Name":"Arie", "Mother":"Marie", "Father":"Nathan", "Spouse":"Alex", "dob":"25/10/1980", "dod":""}
-m6 = {"Name":"Alex", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Arie", "dob":"28/02/1980", "dod":""}
-m7 = {"Name":"Brie", "Mother":"Marie", "Father":"Nathan", "Spouse":"Kat", "dob":"15/07/1985", "dod":""}
-m8 = {"Name":"Kat", "Mother":"Christina", "Father":"Lorenzo", "Spouse":"Brie", "dob":"01/08/1984", "dod":""}
-p11 = {"Name":"James", "Mother":"Christina", "Father":"Lorenzo", "Spouse":"Sienna", "dob":"10/11/1990", "dod":""}
-p12 = {"Name":"Sienna", "Mother":"Unknown", "Father":"Unknown", "Spouse":"James", "dob":"16/04/1994", "dod":""}
+m5 = {"Name":"Arie", "Mother":"Marie", "Father":"Nathan", "Spouse":"Alex", "dob":[25,10,1980], "dod":[]}
+m6 = {"Name":"Alex", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Arie", "dob":[28,2,1980], "dod":[]}
+m7 = {"Name":"Brie", "Mother":"Marie", "Father":"Nathan", "Spouse":"Kat", "dob":[15,7,1985], "dod":[]}
+m8 = {"Name":"Kat", "Mother":"Christina", "Father":"Lorenzo", "Spouse":"Brie", "dob":[1,8,1984], "dod":[]}
+p11 = {"Name":"James", "Mother":"Christina", "Father":"Lorenzo", "Spouse":"Sienna", "dob":[10,11,1990], "dod":[]}
+p12 = {"Name":"Sienna", "Mother":"Unknown", "Father":"Unknown", "Spouse":"James", "dob":[16,4,1994], "dod":[]}
 
-m9 = {"Name":"Rie", "Mother":"Arie", "Father":"Alex", "Spouse":"Unknown", "dob":"26/06/2005", "dod":""}
-m10 = {"Name":"Kie", "Mother":"Brie", "Father":"Kat", "Spouse":"Unknown", "dob":"21/11/2010", "dod":""}
-p13 = {"Name":"Abby", "Mother":"James", "Father":"Sienna", "Spouse":"Unknown", "dob":"13/03/2025", "dod":""}
+m9 = {"Name":"Rie", "Mother":"Arie", "Father":"Alex", "Spouse":"Unknown", "dob":[26,6,2005], "dod":[]}
+m10 = {"Name":"Kie", "Mother":"Brie", "Father":"Kat", "Spouse":"Unknown", "dob":[21,11,2010], "dod":[]}
+p13 = {"Name":"Abby", "Mother":"James", "Father":"Sienna", "Spouse":"Unknown", "dob":[13,3,2025], "dod":[]}
 
-extra = {"Name":"Mia", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Unknown", "dob":"11/07/2008", "dod":""}
+extra = {"Name":"Mia", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Unknown", "dob":[11,7,2008], "dod":[]}
 famDict = [m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,extra,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13]
 #a list containing the maternal and paternal branch
 
