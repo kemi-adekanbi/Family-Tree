@@ -12,10 +12,13 @@ def feature_menu():
     6. View Cousins
     7. View Family Birthdays
     8. View Birthday Calender
-    9. Exit
+    9. View Average Age Of Death
+    10. View Number Of Children Per Person
+    11. View Average Number Of Children
+    12. Exit
     """
     print(menu)
-    choice = int(input("Enter the number of your choice (1-9): "))
+    choice = int(input("Enter the number of your choice (1-12): "))
     return choice
 
 def format_columns(lst):
@@ -30,13 +33,13 @@ def names():
 def name_checker():
     name = input("Enter their full name: ").title()
     while FamilyDict.is_in_family(name) is not True:
-        name = input("The name could not be found in the Family Tree. Please try again: ").title()
+        name = input("\nThe name could not be found in the Family Tree. Please try again: ").title()
         FamilyDict.is_in_family(name)
     return name
 
 def fam_menu():
     choice = feature_menu()
-    while choice != 9:
+    while choice != 12:
         if choice == 1:
             names()
             name = name_checker()
@@ -70,6 +73,13 @@ def fam_menu():
         elif choice == 8:
             calender = FamilyDict.get_birthday_calender()
             print("\n".join(calender))
+        elif choice == 9:
+            print (f"Average age of death is {FamilyDict.get_average_death_age()} years old.")
+        elif choice == 10:
+            lst = list(map(lambda x: f"{x[0]}: {x[1]}",FamilyDict.get_children_per_person()))
+            format_columns(lst)
+        elif choice == 11:
+            print(f"Average number of children is {FamilyDict.get_average_children()}.")
         choice = feature_menu()
 
 fam_menu()
