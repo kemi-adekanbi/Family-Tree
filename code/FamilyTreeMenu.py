@@ -22,6 +22,9 @@ def feature_menu():
     return choice
 
 def format_columns(lst):
+    while len(lst) % 4 != 0:
+        lst.append(" ")
+
     for first, second, third, fourth in zip(lst[::4], lst[1::4], lst[2::4], lst[3::4]):
         print(f"{first: >25} {second: >25} {third: >25} {fourth: >25}")
 
@@ -72,7 +75,8 @@ def fam_menu():
             format_columns(FamilyDict.get_birthdays())
         elif choice == 8:
             calender = FamilyDict.get_birthday_calender()
-            print("\n".join(calender))
+            format_columns(calender)
+            # print("\n".join(calender))
         elif choice == 9:
             print (f"Average age of death is {FamilyDict.get_average_death_age()} years old.")
         elif choice == 10:

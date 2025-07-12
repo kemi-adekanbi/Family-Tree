@@ -124,7 +124,7 @@ class FamilyTree:
     def get_birthdays(self):
         birthdays = []
         for person in self.__family:
-            birthdays.append(f'{person["Name"]} : {"/".join(person["dob"])}') #adding the name and birthday of each person to the list
+            birthdays.append(f'{person["Name"]} : {person["dob"][0]}/{person["dob"][1]}/{person["dob"][2]}') #adding the name and birthday of each person to the list
         return birthdays
 
     def get_birthday_calender(self):
@@ -231,8 +231,8 @@ m9 = {"Name":"Rie", "Mother":"Arie", "Father":"Alex", "Spouse":"Unknown", "dob":
 m10 = {"Name":"Kie", "Mother":"Brie", "Father":"Kat", "Spouse":"Unknown", "dob":[21,11,2010], "dod":[]}
 p13 = {"Name":"Abby", "Mother":"James", "Father":"Sienna", "Spouse":"Unknown", "dob":[13,3,2025], "dod":[]}
 
-extra = {"Name":"Mia", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Unknown", "dob":[11,7,2008], "dod":[]}
-famDict = [m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,extra,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13]
+#extra = {"Name":"Mia", "Mother":"Unknown", "Father":"Unknown", "Spouse":"Unknown", "dob":[11,7,2008], "dod":[]}
+famDict = [m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13]
 #a list containing the maternal and paternal branch
 
 FamilyDict = FamilyTree(famDict)
