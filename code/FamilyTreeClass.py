@@ -51,6 +51,7 @@ class FamilyTree:
         if name in siblings: #removes the name inputted so it only has their siblings
             siblings.remove(name)
         return siblings
+
     @staticmethod
     def format_checker(lst):
         if lst == "Dead": #don't change anything if they dead
@@ -99,11 +100,11 @@ class FamilyTree:
                 return people
             if type(people) == str:
                 person = self.get_family_member(people)
-                if person["dod"] != "":    #it checks if the death date of the name entered is not empty
+                if person["dod"] != []:    #it checks if the death date of the name entered is not empty
                     return "Dead"    #if it's not, then they are dead
             elif type(people) is list:
                 for x in people:     #checks whether everyone in the list is alive
-                    if self.get_family_member(x)["dod"] != "":    #any dead family is removed from the list
+                    if self.get_family_member(x)["dod"] != []:    #any dead family is removed from the list
                         people.remove(x)
                 if people == []:     #if list is empty, there are no alive family members
                     return "Dead"
@@ -123,11 +124,11 @@ class FamilyTree:
     def get_birthdays(self):
         birthdays = []
         for person in self.__family:
-            birthdays.append(f'{person["Name"]} : {person["dob"]}') #adding the name and birthday of each person to the list
+            birthdays.append(f'{person["Name"]} : {"/".join(person["dob"])}') #adding the name and birthday of each person to the list
         return birthdays
 
     def get_birthday_calender(self):
-        from datetime import datetime
+
 
         def bubble_sort(lst):
             for i in range(len(lst)-1,0,-1):#working backwards in the list
@@ -158,26 +159,24 @@ class FamilyTree:
 
         birthdays = []
         for person in self.__family:
-            date = datetime.strptime(person["dob"], '%d/%m/%Y')
-            birthdays.append({"name": person["Name"], "month": date.month,
-                              "day": date.day})  # storing the name and dob in dictionary for each person
+            birthdays.append({"name": person["Name"], "month": person["dob"][1],
+                              "day": person["dob"][0]})  # storing the name and dob in dictionary for each person
 
         month_sorted = list(sorted(birthdays, key=lambda bday: bday['month']))  # sorts in ascending order using the month values
 
         sorted_birthdays = bubble_sort(month_sorted)
 
         return calender_format(sorted_birthdays)
+
     def get_average_death_age(self):
         all_age = []
         for x in self.__family:
-            if x["dod"] != "": #checks if they are dead
-                dob = x["dob"].split("/") #get the day,month and year numbers only
-                dod = x["dod"].split("/")
-                all_age.append(int(dod[2])-int(dob[2])) #to find the age they died, it subtracts the year they died from the year they were born on
+            if x["dod"] != []: #checks if they are dead
+                all_age.append(x["dod"][2]-x["dob"][2]) #to find the age they died, it subtracts the year they were born from the year they died
         total_age = 0
         for x in all_age:
             total_age += x #adds up all the ages in the list
-        return total_age/len(all_age) #divides the total but number of ages to get the average
+        return total_age/len(all_age) #divides the total by the number of ages to get the average
 
     def get_children_per_person(self):
         people_children = []
