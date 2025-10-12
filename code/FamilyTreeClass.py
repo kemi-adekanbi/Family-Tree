@@ -22,9 +22,9 @@ class FamilyTree:
         Finds the information of the name of the individual provided.
 
         Args:
-            name (str): Full name of an individual
+            name (str): Full name of an individual.
         Returns:
-            dict[str, int]: A dictionary containing their name, parents, spouse, date of birth and death
+            dict[str and int]: A dictionary containing their name, parents, spouse, date of birth and death.
         """
         for person in self.__family:
             if person["Name"] == name:
@@ -35,9 +35,9 @@ class FamilyTree:
         Checks if an individual is in the list of family members.
 
         Args:
-            name (str): Full name of an individual
+            name (str): Full name of an individual.
         Returns:
-            True if successfully found, otherwise False
+            True if successfully found, otherwise False.
         """
         if self.get_family_member(name) is None: #checks if the name entered is not the family tree
             return False
@@ -45,12 +45,12 @@ class FamilyTree:
 
     def get_parents(self,name):
         """
-        Gets the names of the Mother and Father of an individual.
+        Gets the names of the mother and father of an individual.
 
         Args:
-            name (str): Full name of an individual
+            name (str): Full name of an individual.
         Returns:
-            list[str]: A list containing the names of the Mother and Father or Unknown if they aren't known.
+            list[str]: A list containing the names of the mother and father or Unknown if they aren't known.
         """
         person = self.get_family_member(name)
         mother,father = person["Mother"], person["Father"]
@@ -58,13 +58,12 @@ class FamilyTree:
 
     def get_children(self, name):
         """
-        Gets the children of an individual by checking if the individual is the Mother
-        or father of another person.
+        Gets the children of an individual by checking if the individual is the mother or father of another person.
 
         Args:
-            name (str): Full name of an individual
+            name (str): Full name of an individual.
         Returns:
-            list[str]: A list containing the names of their children.
+            list[str]: A list containing the names of their children or an empty list if there is none.
         """
         children = []
         for person in self.__family:
@@ -74,6 +73,15 @@ class FamilyTree:
         return children
 
     def get_grandchildren(self, name):
+        """
+        Gets the grandchildren of an individual by finding their children and checking if those children are the mother
+        or father of another person.
+
+        Args:
+            name (str): Full name of an individual.
+        Returns:
+            list[str]: A list containing the names of their grandchildren or an empty list if there is none.
+        """
         grandchildren = []
         children = self.get_children(name) #finds the children of the name inputted
         if children != []:
@@ -86,16 +94,25 @@ class FamilyTree:
 
     def get_spouse(self, name):
         """
-        Gets the spouse of an individual
+        Gets the spouse of an individual.
+
         Args:
-            name (str): Full name of an individual
+            name (str): Full name of an individual.
         Returns:
-             str: Returns the name of their spouse or Unknown if they don't have one.
+             str: the name of their spouse or Unknown if they don't have one.
         """
         person = self.get_family_member(name)
         return person["Spouse"] #returns their spouse/partner of the name entered
 
     def get_sibling(self, name):
+        """
+        Gets the sibling of an individual by checking if another person has the same mother and/or father.
+
+        Args:
+            name (str): Full name of an individual
+        Returns:
+            list[str]: A list containing the names of their siblings or an empty list if there is none.
+        """
         mother,father = self.get_parents(name)
         if mother == "Unknown" and father == "Unknown":
             return []
@@ -106,6 +123,13 @@ class FamilyTree:
 
     @staticmethod
     def format_checker(lst):
+        """
+        Converts any lists into strings.
+        Args:
+            lst (list)/(str): Empty list, A list containing names or just a string
+        Returns:
+            str: A string of name(s), dead or Unknown.
+        """
         if lst == "Dead": #don't change anything if they dead
             return lst
         if lst == []: # no known family member
@@ -115,6 +139,14 @@ class FamilyTree:
         return ", ".join(lst)
 
     def get_immediate(self, name):
+        """
+        Gets the mother, father, siblings, spouse and child(ren) of an individual.
+
+        Args:
+            name (str): Full name of an individual.
+        Returns:
+            str: A string containing names of their mother, father, siblings, spouse and children, or Unknown.
+        """
         #returns the immediate family of the name entered
         mother,father = self.get_parents(name)
         siblings = self.format_checker(self.get_sibling(name))
@@ -123,10 +155,19 @@ class FamilyTree:
         return f"Mother: {mother} \nFather: {father} \nSiblings: {siblings} \nSpouse: {spouse} \nChildren: {children}"
 
     def get_aunts_uncles(self, name):
+        """
+        Gets the aunt(s) and/or uncle(s) of an individual by finding their grandparents. Then checking if any person
+        have parents with the same name as the grandparents.
+
+        Args:
+            name (str): Full name of an individual
+        Returns:
+            list[str]: A list containing the names of their aunts and/or uncles or an empty list if is none.
+        """
         mother,father = self.get_parents(name)
-        if mother == "Unknown" and father == "Unknown": #have no parents information
+        if mother == "Unknown" and father == "Unknown": #have no parent information
             return []
-        m_sibling = self.get_sibling(mother) #finds the siblings of their parents
+        m_sibling = self.get_sibling(mother)
         f_sibling = self.get_sibling(father)
         if f_sibling == [] and mother != "Unknown": #if they have only one parent information
             return m_sibling
@@ -135,6 +176,14 @@ class FamilyTree:
         return m_sibling + f_sibling #if they have both parents information
 
     def get_cousins(self, name):
+        """
+        Gets the cousin(s) of an individual by getting the children of their aunt and/or uncle.
+
+        Args:
+            name (str): Full name of an individual.
+        Returns:
+            list[str]: A list containing the names of their cousin(s) or an empty list if is none.
+        """
         cousins = []
         aunt_uncle = self.get_aunts_uncles(name) #finds the siblings of their parents
         if len(aunt_uncle) == 0:
@@ -145,8 +194,15 @@ class FamilyTree:
                 cousins += kid
         return cousins
 
-
     def get_extended(self, name):
+        """
+        Gets the alive immediate family, aunts and uncles and cousins.
+
+        Args:
+            name (str): Full name of an individual.
+        Returns:
+            str: A string containing the names of the alive immediate family, cousins, aunts and uncles.
+        """
         def alive_checker(people):
             if people == "Unknown" or people == []:    #filtering out inputs without a family member
                 return people
@@ -174,13 +230,19 @@ class FamilyTree:
                 f"\nSpouse: {alive_spouse} \nChildren: {self.format_checker(alive_children)} \nAunts/Uncles: {self.format_checker(alive_aunts_uncles)} \nCousins: {self.format_checker(alive_cousins)}")
 
     def get_birthdays(self):
+        """Returns a list of strings containing the names and date of birth of each person in the family tree list."""
         birthdays = []
         for person in self.__family:
             birthdays.append(f'{person["Name"]} : {person["dob"][0]}/{person["dob"][1]}/{person["dob"][2]}') #adding the name and birthday of each person to the list
         return birthdays
 
     def get_birthday_calender(self):
+        """
+        Gets the month and day each person was born on and lists them in a calendar format.
 
+        Returns:
+            list[dict]: A list of birthdays in chronological order.
+        """
 
         def bubble_sort(lst):
             for i in range(len(lst)-1,0,-1):#working backwards in the list
@@ -201,8 +263,7 @@ class FamilyTree:
             for index, x in enumerate(lst):
                 person2 = lst[index - 1]  # gets the dictionary at the previous index
                 x["month"] = month_names[x["month"] - 1]  # changing the int version of the month to a string version of the month
-                if x["month"] == person2["month"] and x["day"] == person2[
-                    "day"]:  # checks to see if anyone has the same birthday
+                if x["month"] == person2["month"] and x["day"] == person2["day"]:  # checks to see if anyone has the same birthday
                     x["name"] = f"{person2['name']}, {x['name']}"  # combines their name together
                     lst.remove(person2)  # removes the dictionary as they've been combined with another
                     calender.remove(calender[-1])
@@ -221,6 +282,12 @@ class FamilyTree:
         return calender_format(sorted_birthdays)
 
     def get_average_death_age(self):
+        """
+        Finds the age of all the people that are dead in the family tree list and calculates the average.
+
+        Returns:
+             float: average age of death.
+        """
         all_age = []
         for x in self.__family:
             if x["dod"] != []: #checks if they are dead
@@ -231,6 +298,12 @@ class FamilyTree:
         return total_age/len(all_age) #divides the total by the number of ages to get the average
 
     def get_children_per_person(self):
+        """
+        Get the number of children for each person in the family tree list.
+
+        Returns:
+             list[list[str, int]]: A string of the average number of children.
+        """
         people_children = []
         for x in self.__family:
             children = self.get_children(x["Name"]) # finds the children of each person in the family tree
@@ -239,6 +312,12 @@ class FamilyTree:
         return people_children
 
     def get_average_children(self):
+        """
+        Gets the average amount of children in the list of family members to 2 significant figures.
+
+        Returns:
+            str: A string of the average number of children
+        """
         lst_children = self.get_children_per_person() # gets how many children each person has
         total = 0
         for x in lst_children:
@@ -288,5 +367,3 @@ famDict = [m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12
 #a list containing the maternal and paternal branch
 
 FamilyDict = FamilyTree(famDict)
-print(FamilyDict.get_family_member.__doc__)
-help(FamilyDict.get_family_member)
