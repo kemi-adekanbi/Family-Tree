@@ -1,32 +1,77 @@
 class FamilyTree:
+    """
+    A class representing a Family Tree.
+    Attributes:
+        self.__family (list): List of family members
+    """
     def __init__(self, lst):
+        """
+        Initialise a Family Tree object
+
+        Parameters:
+            lst (list of dict): List of dictionaries that hold family member's information.
+        """
         self.__family = lst
 
     def get_family(self):
-        return self.__family # return a list of the family tree
+        """Returns list of dictionaries that hold family member's information."""
+        return self.__family
 
     def get_family_member(self, name):
+        """
+        Finds the information of the name of the individual provided.
+
+        Args:
+            name (str): Full name of an individual
+        Returns:
+            dict[str, int]: A dictionary containing their name, parents, spouse, date of birth and death
+        """
         for person in self.__family:
             if person["Name"] == name:
                 return person #returns the details of person in the family tree
 
     def is_in_family(self, name):
+        """
+        Checks if an individual is in the list of family members.
+
+        Args:
+            name (str): Full name of an individual
+        Returns:
+            True if successfully found, otherwise False
+        """
         if self.get_family_member(name) is None: #checks if the name entered is not the family tree
             return False
         return True
 
     def get_parents(self,name):
+        """
+        Gets the names of the Mother and Father of an individual.
+
+        Args:
+            name (str): Full name of an individual
+        Returns:
+            list[str]: A list containing the names of the Mother and Father or Unknown if they aren't known.
+        """
         person = self.get_family_member(name)
         mother,father = person["Mother"], person["Father"]
-        return [mother, father]   #returns the parents of the name inputted
+        return [mother, father]
 
     def get_children(self, name):
+        """
+        Gets the children of an individual by checking if the individual is the Mother
+        or father of another person.
+
+        Args:
+            name (str): Full name of an individual
+        Returns:
+            list[str]: A list containing the names of their children.
+        """
         children = []
         for person in self.__family:
             if person["Mother"] == name or person["Father"] == name: #checks if the person inputted is stored as anyone's parent
                 children.append(person["Name"])
 
-        return children  #returns a list of their children
+        return children
 
     def get_grandchildren(self, name):
         grandchildren = []
@@ -34,12 +79,19 @@ class FamilyTree:
         if children != []:
             for x in children:
                 grandkid = self.get_children(x) # checks if their child has their own kid
-                if grandkid is not None:
+                if grandkid != []: #if they do, it gets added to a list of grandchildren
                     for g in grandkid:
-                        grandchildren.append(g) #if they do, it gets added to a list of grandchildren
+                        grandchildren.append(g)
         return grandchildren
 
     def get_spouse(self, name):
+        """
+        Gets the spouse of an individual
+        Args:
+            name (str): Full name of an individual
+        Returns:
+             str: Returns the name of their spouse or Unknown if they don't have one.
+        """
         person = self.get_family_member(name)
         return person["Spouse"] #returns their spouse/partner of the name entered
 
@@ -236,3 +288,5 @@ famDict = [m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12
 #a list containing the maternal and paternal branch
 
 FamilyDict = FamilyTree(famDict)
+print(FamilyDict.get_family_member.__doc__)
+help(FamilyDict.get_family_member)
