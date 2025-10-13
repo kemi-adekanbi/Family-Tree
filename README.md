@@ -23,7 +23,7 @@ The information of each family memeber is stored in a dictionary. This includes 
 Run the `FamilyTreeMenu.py` file to start interacting with the family tree.
 
 ## Optimisations
-In my original plan for this project, I had class called Person that had private attributes to store each person's information. While I had no trouble on finding their parents as it was stored within the object, finding relationships that were not explicitly stated was difficult e.g. grandchildren. With this in mind, I switched to using a dictionary for faster and easier retrival of information. The information was stored using key-value pairs and weren't individually private. This significantly boosted my progress.
+Originally, I stored the family members using a class called Person and created attributes for their personal information. However, this complicated the process leading to features not working as they required Family Tree class methods as well. After some reflection, I realised storing the family member's infomation using a dictionary was a more optimal approach. Using the keys and values, I was able to store information about each indivdual in a clear and understandable manner. This made accessing information faster with less code.
 
 ## Lessons Learned
-I learnt the importance of choosing the right data structure that fit the needs of my projects as well as how to applying object orientated programming principles to my code. For example, encapusulation by making the family tree list private so it can't be changed from outside the class.
+I learnt the importance of choosing the right data structure that fit the needs of my projects as well as how to applying object orientated programming principles to my code. For example, encapusulation by making the family tree list private so it can't be changed from outside the class and making my functions more reusable to other parts of my FamilyTree class.
